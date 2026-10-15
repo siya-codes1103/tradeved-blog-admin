@@ -1,0 +1,11 @@
+/** The TradeVed starter categories, for a brand-new database (API mode). Same as site/content/categories.json. */
+export const STARTER_CATEGORIES = [
+  { slug: "market-spotlight", name: "Market Spotlight", description: "Daily market moves and what drove them, explained simply.", sort: 1, accent: "#CC0066" },
+  { slug: "ipo", name: "IPO Insights", description: "IPO dates, price bands, lot sizes and how allotment works.", sort: 2, accent: "#FDE900" },
+  { slug: "stock-analysis", name: "Stock Analysis", description: "Company-by-company analysis with financials and risks.", sort: 3, accent: "#9BEC00" },
+  { slug: "stock-market-101", name: "Stock Market 101", description: "Start here: the basics of investing and trading in India.", sort: 4, accent: "#2F8EFF" },
+  { slug: "mutual-funds", name: "Mutual Funds & SIP", description: "Fund types, plans, costs and SIP strategies, in plain language.", sort: 5, accent: "#2F8EFF" },
+  { slug: "futures-and-options", name: "Options & Futures", description: "Derivatives from first principles: calls, puts, Greeks and hedging.", sort: 6, accent: "#CC0066" },
+  { slug: "technical-analysis", name: "Technical Analysis", description: "Charts, candlesticks and indicators, with real examples.", sort: 7, accent: "#FDE900" },
+  { slug: "personal-finance", name: "Wealth Corner", description: "Taxes, savings and money basics for everyday investors.", sort: 8, accent: "#9BEC00" },
+] as const;

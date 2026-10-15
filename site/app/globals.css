@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@theme {
+  --color-primary: #9BEC00;
+  --color-dark00: #0F1209; --color-dark01: #181916; --color-dark02: #242620;
+  --color-light00: #73786C; --color-light01: #A2AB9A; --color-light02: #D3DEC8; --color-light03: #F7FAF5; --color-light04: #FFFFFF;
+  --text-button: 14px;
+  --font-heading: var(--font-raleway), system-ui, sans-serif; --font-body: var(--font-opensans), system-ui, sans-serif;
+}

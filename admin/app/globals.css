@@ -1,0 +1,10 @@
+@import "tailwindcss";
+/* Tailwind must also scan the shared blog components that live in the site folder. */
+@source "../../site/components";
+@source "../../site/app";
+@import "../../site/app/blog/blog.css";
+
+@theme {
+  --font-heading: var(--font-raleway), system-ui, sans-serif;
+  --font-body: var(--font-opensans), system-ui, sans-serif;
+}

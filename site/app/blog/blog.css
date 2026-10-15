@@ -1,0 +1,51 @@
+/* TradeVed blog theme. Light page with dark hero, covers and charts (like the approved design).
+   Dark mode follows the visitor's device. These variables do not depend on your site's Tailwind tokens. */
+.tv {
+  --tv-bg: #f7faf5;
+  --tv-card: #ffffff;
+  --tv-ink: #0f1209;
+  --tv-body: #3b4234;
+  --tv-mut: #73786c;
+  --tv-faint: #a2ab9a;
+  --tv-line: #d3dec8;
+  --tv-soft: #edf7d8;
+  --tv-accent: #3f7a00;
+  --tv-lime: #9bec00;
+  --tv-pink: #cc0066;
+  --tv-warn: #8a6d00;
+  background: var(--tv-bg);
+  color: var(--tv-ink);
+}
+@media (prefers-color-scheme: dark) {
+  .tv {
+    --tv-bg: #0f1209;
+    --tv-card: #181916;
+    --tv-ink: #f7faf5;
+    --tv-body: #d3dec8;
+    --tv-mut: #a2ab9a;
+    --tv-faint: #73786c;
+    --tv-line: #242620;
+    --tv-soft: #1f2a0c;
+    --tv-accent: #9bec00;
+    --tv-pink: #ff5ca8;
+    --tv-warn: #fde900;
+  }
+}
+/* Always-dark surfaces: hero, covers, chart cards, table headers */
+.tv .tv-dark {
+  --tv-bg: #0f1209;
+  --tv-card: #181916;
+  --tv-ink: #f7faf5;
+  --tv-body: #d3dec8;
+  --tv-mut: #a2ab9a;
+  --tv-faint: #73786c;
+  --tv-line: #242620;
+  --tv-soft: #1f2a0c;
+  --tv-accent: #9bec00;
+  --tv-pink: #ff5ca8;
+  background: var(--tv-bg);
+  color: var(--tv-ink);
+}
+.tv ::selection { background: var(--tv-lime); color: #0f1209; }
+.tv :focus-visible { outline: 2px solid var(--tv-accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .tv * { transition: none !important; } }
