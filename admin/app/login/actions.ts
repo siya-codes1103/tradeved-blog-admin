@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { API_MODE, COOKIE_ACCESS, COOKIE_REFRESH } from "@/lib/api/config";
-import { ACCESS_COOKIE_AGE, AuthError, cookieBase, loginWithBackend, logoutFromBackend, REFRESH_COOKIE_AGE } from "@/lib/api/client";
+import { ACCESS_COOKIE_AGE, AuthError, cookieBase, loginWithBackend, logoutFromBackend, REFRESH_COOKIE_AGE } from "@/lib/api/session";
 
 export async function login(_prev: { error?: string } | undefined, form: FormData): Promise<{ error?: string }> {
   if (!API_MODE) redirect("/");

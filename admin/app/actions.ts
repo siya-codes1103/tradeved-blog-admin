@@ -3,11 +3,14 @@
 import matter from "gray-matter";
 import { revalidatePath } from "next/cache";
 import { LEVELS } from "@/lib/blog/config";
+import { API_MODE } from "@/lib/api/config";
+import { api } from "@/lib/api/client";
 import { readAllPosts, readAuthors, readCategories } from "@/lib/blog/store";
 import { assertDev, postExists, removePost, saveCoverFile, writeAuthors, writePost } from "@/lib/blog/writer";
 import type { Author, Post } from "@/lib/blog/types";
-import { authorSchema, importRowSchema, postInputSchema, zodMessages, type PostFormPayload } from "@/lib/blog/validation";
+import { authorSchema, categorySchema, importRowSchema, postInputSchema, zodMessages, type PostFormPayload } from "@/lib/blog/validation";
 import { readMinutes, slugify } from "@/lib/blog/utils";
+import { STARTER_CATEGORIES } from "@/lib/blog/starter-categories";
 
 type Fail = { ok: false; error: string; fieldErrors?: Record<string, string> };
 type Ok<T = object> = { ok: true } & T;
@@ -120,6 +123,47 @@ export async function deleteAuthor(slug: string): Promise<Ok | Fail> {
   }
 }
 
+export async function saveCategory(input: unknown): Promise<Ok | Fail> {
+  try {
+    if (!API_MODE) throw new Error("Category management is only available in API mode.");
+    const parsed = categorySchema.safeParse(input);
+    if (!parsed.success) return { ok: false, ...zodMessages(parsed.error) };
+    const { editing, ...category } = parsed.data;
+    await api(`/blog/admin/categories${editing ? `/${encodeURIComponent(category.slug)}` : ""}`, {
+      method: editing ? "PUT" : "POST",
+      json: category,
+    });
+    refresh();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not save category" };
+  }
+}
+
+export async function deleteCategory(slug: string): Promise<Ok | Fail> {
+  try {
+    if (!API_MODE) throw new Error("Category management is only available in API mode.");
+    await api(`/blog/admin/categories/${encodeURIComponent(slug)}`, { method: "DELETE" });
+    refresh();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not delete category" };
+  }
+}
+
+export async function addStarterCategories(): Promise<Ok | Fail> {
+  try {
+    if (!API_MODE) throw new Error("Category management is only available in API mode.");
+    for (const category of STARTER_CATEGORIES) {
+      await api("/blog/admin/categories", { method: "POST", json: category });
+    }
+    refresh();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not add starter categories" };
+  }
+}
+
 export interface ImportResult {
   index: number;
   title: string;
@@ -133,6 +177,8 @@ export interface ImportOptions {
   status: "file" | "draft" | "published";
   /** Replace an article when the slug already exists (otherwise it is skipped). */
   overwrite: boolean;
+  /** Category to use when an imported row does not specify one. */
+  defaultCategory?: string;
 }
 
 const truthy = (v: unknown) => v === true || /^(1|true|yes)$/i.test(String(v ?? ""));
@@ -189,9 +235,14 @@ export async function importPosts(rows: unknown[], offset = 0, opts: ImportOptio
       continue;
     }
     const r = parsed.data;
-    const category = cats.get(r.category.toLowerCase());
+    const categoryName = r.category?.trim() || opts.defaultCategory?.trim();
+    if (!categoryName) {
+      out.push({ index, title: r.title, ok: false, error: "Category is required (select a default category or provide one for each row)." });
+      continue;
+    }
+    const category = cats.get(categoryName.toLowerCase());
     if (!category) {
-      out.push({ index, title: r.title, ok: false, error: `Unknown category "${r.category}" (add it in content/categories.json)` });
+      out.push({ index, title: r.title, ok: false, error: `Unknown category "${categoryName}" (add it in content/categories.json)` });
       continue;
     }
     const slug = slugify(r.slug || r.title);
