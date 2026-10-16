@@ -1,5 +1,5 @@
 ---
-title: cbcbvbvvvb
+title: stock-market-listing
 category: market-spotlight
 level: Beginner
 description: >-
@@ -17,7 +17,7 @@ redirect_from:
   - cgcvgvh
 published_at: '2026-10-14T05:12:00.000Z'
 created_at: '2026-10-14T05:12:46.634Z'
-updated_at: '2026-10-14T05:19:46.930Z'
+updated_at: '2026-10-16T03:46:55.790Z'
 ---
 
 :::table

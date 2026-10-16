@@ -26,6 +26,6 @@ const nextConfig: NextConfig = {
     "/blog/sitemap.xml": ["./content/**/*"],
     "/blog/feed.xml": ["./content/**/*"],
   },
-  images: { remotePatterns: imageHosts, ...(localAssets ? { dangerouslyAllowLocalIP: true } : {}) },
+    images: { remotePatterns: imageHosts, ...(localAssets ? { unoptimized: true } : {}) },
 };
 export default nextConfig;
